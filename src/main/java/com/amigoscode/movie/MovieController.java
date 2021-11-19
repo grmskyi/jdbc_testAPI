@@ -1,5 +1,6 @@
 package com.amigoscode.movie;
 
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class MovieController {
         return movieService.getMovies();
     }
 
+
     @GetMapping("{id}")
     public Movie getMovieId(@PathVariable("id") Integer id) {
         return movieService.getMovie(id);
@@ -35,4 +37,8 @@ public class MovieController {
     }
 
    // TODO: Update movie
+    @PatchMapping("{id}")
+    public void updateMovie(@PathVariable("id")Integer id){
+        movieService.updateMovie(id);
+    }
 }

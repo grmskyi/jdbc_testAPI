@@ -20,7 +20,9 @@ public class MovieService {
     }
 
     public void addNewMovie(Movie movie) {
-        // TODO: check if movie exists
+        if(movie==null){
+            throw  new NotFoundException("Movie dont found");
+        }
         int result = movieDao.insertMovie(movie);
         if (result != 1) {
             throw new IllegalStateException("oops something went wrong");
@@ -42,5 +44,17 @@ public class MovieService {
     public Movie getMovie(int id) {
         return movieDao.selectMovieById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Movie with id %s not found", id)));
+    }
+
+    public void updateMovie(Integer id){
+        Optional<Movie> movies = movieDao.selectMovieById(id);
+        movies.ifPresentOrElse(movie -> {
+            int result = movieDao.updateMovie(id);
+            if (result != 1) {
+                throw new IllegalStateException("oops could not update movie");
+            }
+        }, () -> {
+            throw new NotFoundException(String.format("Movie with id %s not found", id));
+        });
     }
 }
